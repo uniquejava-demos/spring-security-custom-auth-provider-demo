@@ -1,5 +1,6 @@
 package demo.config;
 
+import demo.security.GoogleCloudAuthenticationProvider;
 import demo.security.JwtAuthenticationProvider;
 import demo.utils.JwtTokenFilter;
 import org.springframework.context.annotation.Bean;
@@ -17,15 +18,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtTokenFilter jwtTokenFilter;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
+    private final GoogleCloudAuthenticationProvider googleCloudAuthenticationProvider;
 
-    public SecurityConfig(JwtTokenFilter jwtTokenFilter, JwtAuthenticationProvider jwtAuthenticationProvider) {
+    public SecurityConfig(JwtTokenFilter jwtTokenFilter, JwtAuthenticationProvider jwtAuthenticationProvider, GoogleCloudAuthenticationProvider googleCloudAuthenticationProvider) {
         this.jwtTokenFilter = jwtTokenFilter;
         this.jwtAuthenticationProvider = jwtAuthenticationProvider;
+        this.googleCloudAuthenticationProvider = googleCloudAuthenticationProvider;
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager() {
-        return new ProviderManager(jwtAuthenticationProvider);
+        return new ProviderManager(jwtAuthenticationProvider, googleCloudAuthenticationProvider);
     }
 
     @Bean
